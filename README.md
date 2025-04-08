@@ -30,7 +30,7 @@ MqttTemperatureMonitor
 
 ## 主機
 
-1. broker資料夾移至佈署主機，以路徑`home/user/MqttTemperatureMonitor/broker`為例
+1. broker資料夾移至佈署主機，以路徑`home/user/MqttTemperatureMonitor/broker`為例 (備註: mosquitto資料夾也需要移入, 含初始化設定值)
 
 2. 修改.env參數
 
