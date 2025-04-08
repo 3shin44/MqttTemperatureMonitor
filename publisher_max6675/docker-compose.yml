@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  mqtt-temperature-monitor-publisher:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    restart: unless-stopped
+    devices:
+      - "/dev/spidev0.0:/dev/spidev0.0" # 授權訪問 SPI 設備
+      - "/dev/spidev0.1:/dev/spidev0.1"
+    privileged: true # 允許容器訪問硬件
+    network_mode: host
+
+networks:
+  default:
+    driver: bridge

@@ -1,0 +1,35 @@
+version: '3.8'  # 使用 Docker Compose 版本 3.8
+
+services:
+  influxdb:
+    image: influxdb:latest  # 使用最新版本的 InfluxDB 映像檔
+    container_name: influxdb  # 設定容器名稱為 influxdb
+    restart: unless-stopped  # 當容器非手動停止時，會自動重新啟動
+    ports:
+      - "${INFLUXDB_PORT}:8086"  # 將本機的 ${INFLUXDB_PORT} 轉發到容器內的 8086（InfluxDB 預設 HTTP 介面）
+    volumes:
+      - ${INFLUXDB_DATA_DIR}:/var/lib/influxdb2  # 掛載本機目錄作為 InfluxDB 資料存儲位置
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup  # 設定 InfluxDB 初始化模式
+      - DOCKER_INFLUXDB_INIT_USERNAME=${INFLUXDB_USERNAME}  # 設定管理員使用者名稱
+      - DOCKER_INFLUXDB_INIT_PASSWORD=${INFLUXDB_PASSWORD}  # 設定管理員密碼
+      - DOCKER_INFLUXDB_INIT_ORG=${INFLUXDB_ORG}  # 設定 InfluxDB 的組織名稱
+      - DOCKER_INFLUXDB_INIT_BUCKET=${INFLUXDB_BUCKET}  # 設定預設的資料桶名稱
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=${INFLUXDB_ADMINTOKEN}  # 設定管理員 Token
+    command: ["/bin/sh", "-c", "mkdir -p /var/lib/influxdb2 && influxd"]  # 確保資料夾存在後啟動 InfluxDB
+    
+  mosquitto:
+    image: eclipse-mosquitto
+    container_name: mosquitto
+    restart: always
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+      - ./mosquitto/data:/mosquitto/data
+      - ./mosquitto/log:/mosquitto/log
+    command: ["/bin/sh", "-c", "mkdir -p /mosquitto/config /mosquitto/data /mosquitto/log && mosquitto"]
+
+networks:
+  default:
+    driver: bridge  # 使用 bridge 網路模式來讓容器之間可以互相溝通
