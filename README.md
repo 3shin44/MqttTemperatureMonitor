@@ -64,3 +64,10 @@ MqttTemperatureMonitor
 | SCK  | GPIO11 | 時鐘(SCLK)          |
 | CS   | GPIO8  | Chip Select         |
 | MISO | GPIO9  | Master In Slave Out |
+
+
+## 測試
+
+監測電鍋溫度
+
+![alt result_demo](./imgFolder/result_demo.png)
