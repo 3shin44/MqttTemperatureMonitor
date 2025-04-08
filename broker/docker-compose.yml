@@ -16,7 +16,7 @@ services:
       - DOCKER_INFLUXDB_INIT_ORG=${INFLUXDB_ORG}  # 設定 InfluxDB 的組織名稱
       - DOCKER_INFLUXDB_INIT_BUCKET=${INFLUXDB_BUCKET}  # 設定預設的資料桶名稱
       - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=${INFLUXDB_ADMINTOKEN}  # 設定管理員 Token
-    command: ["/bin/sh", "-c", "mkdir -p /var/lib/influxdb2 && influxd"]  # 確保資料夾存在後啟動 InfluxDB
+    command: ["influxd"]  # 確保資料夾存在後啟動 InfluxDB
     
   mosquitto:
     image: eclipse-mosquitto
@@ -28,7 +28,7 @@ services:
       - ./mosquitto/config:/mosquitto/config
       - ./mosquitto/data:/mosquitto/data
       - ./mosquitto/log:/mosquitto/log
-    command: ["/bin/sh", "-c", "mkdir -p /mosquitto/config /mosquitto/data /mosquitto/log && mosquitto"]
+    command: ["mosquitto"]
 
 networks:
   default:
